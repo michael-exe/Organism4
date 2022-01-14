@@ -33,36 +33,22 @@ public class Player : MonoBehaviour
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
-        //EJECT
-        if (objectGrabed.Count >= 1 && Input.GetKeyDown(KeyCode.X))
-        {
-            var obj = objectGrabed[objectGrabed.Count - 1];
-            obj.tag = "Mid_Molecule";
-            obj.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-            obj.GetComponent<Rigidbody2D>().AddForce(obj.transform.parent.up * throwSpeed);
-            obj.transform.SetParent(null);
-            StartCoroutine(ChangeTag());
-            //Destroy(obj, 3f);
-            objectGrabed.RemoveAt(objectGrabed.Count - 1);
-        }
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            SceneManager.LoadScene("Organism");
-        }
-
         //DETECTOR(ext)  
         ALL_Attach(UR_Detector.position, UR_Holder);
         ALL_Attach(UL_Detector.position, UL_Holder);
         ALL_Attach(DR_Detector.position, DR_Holder);
         ALL_Attach(DL_Detector.position, DL_Holder);
+
+        Eject();
+
+        LevelRestart(); 
     }
     //once/frame independent from framerate
     private void FixedUpdate()
     {
         //MOVEMENT
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
-    }   
+    }
 
     //Player AttachmentController
     void ALL_Attach(Vector2 pos, Transform _holder)
@@ -79,8 +65,22 @@ public class Player : MonoBehaviour
             Ext2Int.collider.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 
             FindObjectOfType<Player>().objectGrabed.Add(Ext2Int.collider.gameObject);
-        }      
-
+        }
+    }
+    //EJECT
+    void Eject()
+    {
+        if (objectGrabed.Count >= 1 && Input.GetKeyDown(KeyCode.X))
+        {
+            var obj = objectGrabed[objectGrabed.Count - 1];
+            obj.tag = "Mid_Molecule";
+            obj.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+            obj.GetComponent<Rigidbody2D>().AddForce(obj.transform.parent.up * throwSpeed);
+            obj.transform.SetParent(null);
+            StartCoroutine(ChangeTag());
+            //Destroy(obj, 3f);
+            objectGrabed.RemoveAt(objectGrabed.Count - 1);
+        }
     }
     //After ejection make attachable again
     IEnumerator ChangeTag()
@@ -90,6 +90,15 @@ public class Player : MonoBehaviour
         obj.tag = "Ext_Molecule";
         //yield return new WaitForSeconds(5f);
         //obj.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+    }
+
+    
+
+    void LevelRestart() {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene("Organism");
+        }
     }
 }
 //https://youtu.be/whzomFgjT50 Movement
