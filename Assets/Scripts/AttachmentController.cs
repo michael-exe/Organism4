@@ -5,6 +5,7 @@ using UnityEngine;
 public class AttachmentController : MonoBehaviour
     //really: HolderController
 {
+    public SpriteRenderer spriteRenderer;
     //DETECTOR(ext) 
     public Transform UR_Detector;
     public Transform UL_Detector;
