@@ -4,9 +4,9 @@ public class CursorXhair : MonoBehaviour
 {
     public Player Player;
     public AttachmentController Molecule;
-    //public SpriteRenderer spriteRenderer;
     public Sprite newSprite;
     public Sprite originalSprite;
+    //[SerializeField] private GameObject m2pCollision;
 
     // Start is called before the first frame update
     void Awake()
@@ -27,10 +27,12 @@ public class CursorXhair : MonoBehaviour
 
         if (mouse2Player.collider != null && mouse2Player.collider.tag == "Int_Molecule")
         {
+            Debug.Log("mouse2Player is colling");
             Molecule.spriteRenderer.sprite = newSprite;
         }
         else
         {
+            Debug.Log("mouse2Player is NOT colling");
             Molecule.spriteRenderer.sprite = originalSprite;
         }
     }
