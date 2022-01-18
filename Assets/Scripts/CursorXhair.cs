@@ -27,12 +27,12 @@ public class CursorXhair : MonoBehaviour
 
         if (mouse2Player.collider != null && mouse2Player.collider.tag == "Int_Molecule")
         {
-            Debug.Log("mouse2Player is colling");
+            Debug.Log("mouse2Player is colliding");
             Molecule.spriteRenderer.sprite = newSprite;
         }
         else
         {
-            Debug.Log("mouse2Player is NOT colling");
+            Debug.Log("mouse2Player is NOT colliding");
             Molecule.spriteRenderer.sprite = originalSprite;
         }
     }
