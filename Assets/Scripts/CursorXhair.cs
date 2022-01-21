@@ -1,18 +1,24 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CursorXhair : MonoBehaviour
 {
     public Player Player;
     public AttachmentController Molecule;
+    //public SpriteRenderer spriteRenderer;
     public Sprite newSprite;
     public Sprite originalSprite;
-    //[SerializeField] private GameObject m2pCollision;
+    List<SpriteRenderer> collidingObjects = new List<SpriteRenderer>();
+    private LayerMask mask;
 
-    // Start is called before the first frame update
-    void Awake()
+
+    private void Awake()
     {
-       Cursor.visible = false;       
+        mask = ~(1 << LayerMask.NameToLayer("Player"));
     }
+
     // Update is called once per frame
     void Update()
     {
@@ -23,17 +29,34 @@ public class CursorXhair : MonoBehaviour
         transform.position = mousePos;
 
         Debug.DrawRay(playerPos, direction);
-        RaycastHit2D mouse2Player = Physics2D.Linecast(mousePos, playerPos);
+        //longer definition instead of if
+        //I declare and define an enumerable variables
+        //_ => _ means convert any parameter in any parameter
+        var hitObjects = Physics2D.LinecastAll(mousePos, playerPos, mask)
+            .Select(_ => _.collider.GetComponent<SpriteRenderer>())
+            .Where(_ => _ != null)
+            .Where(_ => _.CompareTag("Int_Molecule"));
 
-        if (mouse2Player.collider != null && mouse2Player.collider.tag == "Int_Molecule")
+        //iterate enumerable 
+        foreach (var spriteRenderer in hitObjects)
         {
-            Debug.Log("mouse2Player is colliding");
-            Molecule.spriteRenderer.sprite = newSprite;
+            //use the iteration of the enumerable to look the absense of a component in the list
+            if (!collidingObjects.Contains(spriteRenderer))
+            {
+                collidingObjects.Add(spriteRenderer);
+                spriteRenderer.sprite = newSprite;
+            }
         }
-        else
+
+        //this is a sublist made with Linq new list method
+        var notLongertHitObjects = collidingObjects.Except(hitObjects).ToList();
+        //for needs [i]
+        //for iterates a specific number of times
+        //everytime loop add one to check all elements
+        for (var i = 0; i < notLongertHitObjects.Count; i++)
         {
-            Debug.Log("mouse2Player is NOT colliding");
-            Molecule.spriteRenderer.sprite = originalSprite;
+            notLongertHitObjects[i].sprite = originalSprite;
+            collidingObjects.Remove(notLongertHitObjects[i]);
         }
     }
 }

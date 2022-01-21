@@ -895,7 +895,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &463487130
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3136,7 +3136,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.4539007, y: 1}
+    m_SensorSize: {x: 2.039823, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -4051,7 +4051,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1509365455133619122, guid: 54ca3cfc915bacd45bb6d800f4ada8ca, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2988955266400818361, guid: 54ca3cfc915bacd45bb6d800f4ada8ca, type: 3}
       propertyPath: m_RootOrder
@@ -5512,7 +5512,7 @@ GameObject:
   - component: {fileID: 973317302765818647}
   m_Layer: 0
   m_Name: Int_Molecule_Original
-  m_TagString: Int_Molecule
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
