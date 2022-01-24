@@ -7,7 +7,6 @@ public class CursorXhair : MonoBehaviour
 {
     public Player Player;
     public AttachmentController Molecule;
-    //public SpriteRenderer spriteRenderer;
     public Sprite newSprite;
     public Sprite originalSprite;
     bool hasCollided;
@@ -25,14 +24,15 @@ public class CursorXhair : MonoBehaviour
     {
         Vector2 playerPos = Player.transform.position;
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 direction = mousePos - playerPos;
+        Vector2 debugDirection = mousePos - playerPos;
 
         transform.position = mousePos;
 
-        Debug.DrawRay(playerPos, direction);
-        //longer definition instead of if
-        //I declare and define an enumerable variables
+        Debug.DrawRay(playerPos, debugDirection);
+        //longer definition instead of multiple && if conditions
+        //I declare and define an enumerable variable
         //_ => _ means convert any parameter in any parameter
+        //Similar to Linecast except that all Colliders are reported
         var hitObjects = Physics2D.LinecastAll(mousePos, playerPos, mask)
             .Select(_ => _.collider.GetComponent<SpriteRenderer>())
             .Where(_ => _ != null)
