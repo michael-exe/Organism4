@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-
+    public CursorXhair CursorXhair;
+    
     public float moveSpeed = 5f;
 
     public Rigidbody2D rb;

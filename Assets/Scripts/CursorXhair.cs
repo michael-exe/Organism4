@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+//for enum and quering
 using System.Linq;
 using UnityEngine;
 
@@ -9,9 +10,10 @@ public class CursorXhair : MonoBehaviour
     public AttachmentController Molecule;
     public Sprite newSprite;
     public Sprite originalSprite;
-    bool hasCollided;
+    //bool hasCollided;
     List<SpriteRenderer> collidingObjects = new List<SpriteRenderer>();
     private LayerMask mask;
+    
 
 
     private void Awake()
@@ -29,9 +31,9 @@ public class CursorXhair : MonoBehaviour
         transform.position = mousePos;
 
         Debug.DrawRay(playerPos, debugDirection);
-        //longer definition instead of multiple && if conditions
+        //longer linq definition instead of multiple && if conditions/list
         //I declare and define an enumerable variable
-        //_ => _ means convert any parameter in any parameter
+        //_ => _ means to pass any viable parameter to consider it
         //Similar to Linecast except that all Colliders are reported
         var hitObjects = Physics2D.LinecastAll(mousePos, playerPos, mask)
             .Select(_ => _.collider.GetComponent<SpriteRenderer>())
@@ -48,17 +50,16 @@ public class CursorXhair : MonoBehaviour
         //iterate enumerable 
         foreach (var spriteRenderer in hitObjects)
         {
-            //use the iteration of the enumerable to look the absense of a component in the list
+            //use the iteration of the enumerable to check and update the list
             if (!collidingObjects.Contains(spriteRenderer))
             {
                 collidingObjects.Add(spriteRenderer);
             }
         }
 
-        //this is a sublist made with Linq "new list" method
         var notLongetHitObjects = collidingObjects.Except(hitObjects).ToList();
         //"for" needs [i]
-        //for iterates a specific number of times
+        //"for" iterates a specific number of times
         //everytime it loops add one to check all elements
         for (var i = 0; i < notLongetHitObjects.Count; i++)
         {
@@ -73,6 +74,7 @@ public class CursorXhair : MonoBehaviour
 
         var closestObject = collidingObjects.OrderBy(_ => (_.transform.position - (Vector3)mousePos).sqrMagnitude).First();
         closestObject.sprite = newSprite;
+
         foreach (var spriteRenderer in collidingObjects.Where(_ => _ != closestObject))
         {
             spriteRenderer.sprite = originalSprite;
