@@ -28,14 +28,14 @@ public class CursorXhair : MonoBehaviour
 
         if (hitObjects.collider != null && hitObjects.collider.tag == "Int_Molecule")
         {
-            Debug.Log("hitObjects is colliding");
+            Debug.Log("Sprite Changed and Added to List");
             hitObjects.collider.GetComponent<SpriteRenderer>().sprite = newSprite;
             collidingObjects.Add(hitObjects.collider.GetComponent<SpriteRenderer>());
 
         }
         else if (collidingObjects.Count >= 1 && hitObjects.collider.tag == "Player")
         {
-            Debug.Log("hitObjects is not colliding");
+            Debug.Log("Sprite Changed and Removed from List");
             //linq method
             collidingObjects.Last().GetComponent<SpriteRenderer>().sprite = originalSprite;
             collidingObjects.RemoveAt(collidingObjects.Count - 1);
@@ -45,7 +45,5 @@ public class CursorXhair : MonoBehaviour
         //    collidingObjects.Last().GetComponent<SpriteRenderer>().sprite = originalSprite;
         //    collidingObjects.RemoveAt(collidingObjects.Count - 1);
         //}
-
-
     }
 }
