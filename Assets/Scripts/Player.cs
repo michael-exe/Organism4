@@ -40,7 +40,7 @@ public class Player : MonoBehaviour
         ALL_Attach(DR_Detector.position, DR_Holder);
         ALL_Attach(DL_Detector.position, DL_Holder);
 
-        Eject();
+        //Eject();
 
         LevelRestart(); 
     }
@@ -69,22 +69,22 @@ public class Player : MonoBehaviour
         }
     }
     //EJECT
-    void Eject()
-    {
-        if (objectGrabed.Count >= 1 && Input.GetKeyDown(KeyCode.X))
-        {
-            var obj = objectGrabed[objectGrabed.Count - 1];
-            obj.tag = "Mid_Molecule";
-            obj.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-            obj.GetComponent<Rigidbody2D>().AddForce(obj.transform.parent.up * throwSpeed);
-            obj.transform.SetParent(null);
-            StartCoroutine(ChangeTag());
-            //Destroy(obj, 3f);
-            objectGrabed.RemoveAt(objectGrabed.Count - 1);
-        }
-    }
+    //void Eject()
+    //{
+    //    if (objectGrabed.Count >= 1 && Input.GetKeyDown(KeyCode.X))
+    //    {
+    //        var obj = objectGrabed[objectGrabed.Count - 1];
+    //        obj.tag = "Mid_Molecule";
+    //        obj.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+    //        obj.GetComponent<Rigidbody2D>().AddForce(obj.transform.parent.up * throwSpeed);
+    //        obj.transform.SetParent(null);
+    //        StartCoroutine(ChangeTag());
+    //        //Destroy(obj, 3f);
+    //        objectGrabed.RemoveAt(objectGrabed.Count - 1);
+    //    }
+    //}
     //After ejection make attachable again
-    IEnumerator ChangeTag()
+    public IEnumerator ChangeTag()
     {
         var obj = objectGrabed[objectGrabed.Count - 1];
         yield return new WaitForSeconds(3f);
