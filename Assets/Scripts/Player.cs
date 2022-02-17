@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using UnityEngine.SceneManagement;
 
 
@@ -68,32 +69,6 @@ public class Player : MonoBehaviour
             FindObjectOfType<Player>().objectGrabed.Add(Ext2Int.collider.gameObject);
         }
     }
-    //EJECT
-    //void Eject()
-    //{
-    //    if (objectGrabed.Count >= 1 && Input.GetKeyDown(KeyCode.X))
-    //    {
-    //        var obj = objectGrabed[objectGrabed.Count - 1];
-    //        obj.tag = "Mid_Molecule";
-    //        obj.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-    //        obj.GetComponent<Rigidbody2D>().AddForce(obj.transform.parent.up * throwSpeed);
-    //        obj.transform.SetParent(null);
-    //        StartCoroutine(ChangeTag());
-    //        //Destroy(obj, 3f);
-    //        objectGrabed.RemoveAt(objectGrabed.Count - 1);
-    //    }
-    //}
-    //After ejection make attachable again
-    public IEnumerator ChangeTag()
-    {
-        var obj = objectGrabed[objectGrabed.Count - 1];
-        yield return new WaitForSeconds(3f);
-        obj.tag = "Ext_Molecule";
-        //yield return new WaitForSeconds(5f);
-        //obj.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
-    }
-
-    
 
     void LevelRestart() {
         if (Input.GetKeyDown(KeyCode.R))
