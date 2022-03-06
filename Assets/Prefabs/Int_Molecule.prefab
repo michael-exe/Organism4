@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7248529444592356139}
   - component: {fileID: 4228584620252307125}
   - component: {fileID: 5111667415493566900}
+  - component: {fileID: 8777412056199392309}
   m_Layer: 0
   m_Name: Int_Molecule
   m_TagString: Ext_Molecule
@@ -173,6 +174,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &8777412056199392309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1509365455133619122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 607372ad86a7f5f4a99c0f47567aa8be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7572268196317734751
 GameObject:
   m_ObjectHideFlags: 0

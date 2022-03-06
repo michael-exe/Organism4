@@ -10,12 +10,17 @@ public class CursorXhair : MonoBehaviour
     public Sprite newSprite;
     public Sprite originalSprite;
     public List<SpriteRenderer> collidingObjects = new List<SpriteRenderer>();
-    //public Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     private LayerMask mask;
-    //Should find a way to decleare it here
-    //SpriteRenderer closestObject = collidingObjects.OrderBy(_ => (_.transform.position - (Vector3)mousePos).sqrMagnitude).First();
-    //public List<GameObject> objectGrabed;
-    
+    public List<GameObject> Explosives;
+    //this won't do because molecule explosion is a script on a prefab!!!!!!!!!!!!!!!!
+    public MoleculeExplosion moleculeExplosion;
+    //EXPLOSION
+    //public float expRadius = 10f;            // Radius within which enemies are damaged.
+    //public float expForce = 100f;            // Force that enemies are thrown from the blast.
+    //public GameObject soundPrefab;            // Audioclip of explosion.
+    //public GameObject explosionPrefab;        // Prefab of explosion effect.
+    //public float Damage = 100;
+
 
     private void Awake()
     {
@@ -33,18 +38,32 @@ public class CursorXhair : MonoBehaviour
 
         Debug.DrawRay(playerPos, debugDirection);
 
+       //SELECT ALL SPRITES
+
+       //Select the Component SpriteRenderer (2)
+       //of the objects hit by the LinecastAll hitObjects (1-3)
+       //that have tag "Int_Molecule" (4)
         var hitObjects = Physics2D.LinecastAll(mousePos, playerPos, mask)
             .Select(_ => _.collider.GetComponent<SpriteRenderer>())
             .Where(_ => _ != null)
             .Where(_ => _.CompareTag("Int_Molecule"));
 
+        //SELECT ONE SPRITE
+
         var hitObject = Physics2D.Linecast(mousePos, playerPos, mask);
 
+        //Get the Component SpriteRenderer (3)
+        //of the object hit by Linecast hitObject (1-2)
         if (hitObject.collider != null)
         {
             hitObject.collider.GetComponent<SpriteRenderer>();
         }
+        
+        //PASS HIT OBJECTS' SPRITES TO LIST
 
+        //Add a variable "spriteRenderer" as element in the list collidingObjects (3)
+        //for every objects that LineCastAll hitObjects has already hit (1)
+        //if such variable is not present in the list already (2)
         foreach (var spriteRenderer in hitObjects)
         {
             if (!collidingObjects.Contains(spriteRenderer))
@@ -52,40 +71,59 @@ public class CursorXhair : MonoBehaviour
                 collidingObjects.Add(spriteRenderer);
             }
         }
+       
+        //RESTORE SPRITES OF OBJECTS NO LONGER HIT
 
-        var notLongetHitObjects = collidingObjects.Except(hitObjects).ToList();
-        for (var i = 0; i < notLongetHitObjects.Count; i++)
+        //Listed as notLongerHitObjects are the objects in the list collidingObjects except for the ones that are currently being hit by LinecastAll hitObjects
+        //as long as there is at least one noLongerHitObjects check every new object in list
+        //Turn the sprite of noLongerObject in question into its originalSprite
+        //Remove it from the list
+        var notLongerHitObjects = collidingObjects.Except(hitObjects).ToList();
+        for (var i = 0; i < notLongerHitObjects.Count; i++)
         {
-            notLongetHitObjects[i].sprite = originalSprite;
-            collidingObjects.Remove(notLongetHitObjects[i]);
+            notLongerHitObjects[i].sprite = originalSprite;
+            collidingObjects.Remove(notLongerHitObjects[i]);
         }
-
+        //Stop when there are no more colliding objects AKA the list is empty      
         if (collidingObjects.Count == 0)
         {
             return;
         }
+        
+        //CHANGE SPRITE OF CLOSEST OBJECT
 
+        //Arrange colldingObjects in order of distance shorter to longer between the colliding object and the mouse and pick the first one
+        //Take that closestObject and update its sprite
         var closestObject = collidingObjects.OrderBy(_ => (_.transform.position - (Vector3)mousePos).sqrMagnitude).First();
         closestObject.sprite = newSprite;
 
+        //RESTORE ORIGINAL SPRITE OF LISTED OBJECTS
+
+        //for every varible "spriteRenderer" in list collidingObject that is not the closestObject
+        //Keep it as the original sprite
         foreach (var spriteRenderer in collidingObjects.Where(_ => _ != closestObject))
         {
             spriteRenderer.sprite = originalSprite;
         }
+        
         Eject();
+        
+        if(Explosives.Count >= 1)
+        {
+            RadioExplosionRange();
+        }
     }
 
     void Eject()
     {
-        if (Player.objectGrabed.Count >= 1 && Input.GetKeyDown(KeyCode.Mouse0))
+        if (Player.objectGrabed.Count >= 1 && Input.GetMouseButton(0))
         {
             //var obj = Player.objectGrabed.Last();
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             var closestObject = collidingObjects.OrderBy(_ => (_.transform.position - (Vector3)mousePos).sqrMagnitude).First();
 
-            //closestObject.GetComponentInChildren<Transform>().tag = "Mid_Molecule";
-            Transform[] MeAndMyKids = closestObject.GetComponentsInChildren<Transform>();
-            foreach (Transform item in MeAndMyKids)
+            Transform[] MoleculeChildren = closestObject.GetComponentsInChildren<Transform>();
+            foreach (Transform item in MoleculeChildren)
             {
                 item.tag = "Mid_Molecule";
             }
@@ -94,8 +132,13 @@ public class CursorXhair : MonoBehaviour
             closestObject.GetComponent<Rigidbody2D>().AddForce(closestObject.transform.parent.up * Player.throwSpeed);
             closestObject.transform.SetParent(null);
             StartCoroutine(ChangeTag());
-            //Destroy(obj, 3f);
-            Player.objectGrabed.RemoveAt(Player.objectGrabed.Count - 1);
+            
+
+            if (Player.objectGrabed.Count >= 1)
+            {
+                Explosives.Add(Player.objectGrabed.Last());
+            }
+            Player.objectGrabed.RemoveAt(Player.objectGrabed.Count - 1);         
         }  
     }
     IEnumerator ChangeTag()
@@ -103,16 +146,33 @@ public class CursorXhair : MonoBehaviour
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         var closestObject = collidingObjects.OrderBy(_ => (_.transform.position - (Vector3)mousePos).sqrMagnitude).First();
         yield return new WaitForSeconds(3f);
-        //closestObject.GetComponentInChildren<AttachmentController>().tag = "Ext_Molecule";
-        Transform[] MeAndMyKids = closestObject.GetComponentsInChildren<Transform>();
-        foreach (Transform item in MeAndMyKids)
+        Transform[] MoleculeChildren = closestObject.GetComponentsInChildren<Transform>();
+        foreach (Transform item in MoleculeChildren)
         {
             item.tag = "Ext_Molecule";
         }
         closestObject.tag = "Ext_Molecule";        
     }
 
+    void RadioExplosionRange()
+    {
+        Collider2D[] moleculeColliders = Physics2D.OverlapCircleAll(Player.transform.position, 6f);
+
+        var ExplosiveMolecules = Explosives.Last();
+
+        foreach (Collider2D moleculeCollider in moleculeColliders)
+        {
+            if (ExplosiveMolecules.GetComponent<MoleculeExplosion>())
+            {   
+                ExplosiveMolecules.gameObject.GetComponent<MoleculeExplosion>().canExplode = true;
+            }
+        }
+    } 
 }
+
+// MUST FIX "Object reference not set to an instance of an object" caused by Destroy
+
+// AoE https://answers.unity.com/questions/1116039/2d-area-of-effect-script.html
 
 // Getting grandchildren with depth-firts research GetComponentInChildren https://answers.unity.com/questions/908455/how-do-i-get-components-in-grandchildren.html
 // foreach and for [i] loop to get children https://answers.unity.com/questions/594210/get-all-children-gameobjects.html

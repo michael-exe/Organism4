@@ -5,6 +5,7 @@ using UnityEngine;
 public class AttachmentController : MonoBehaviour
     //really: HolderController
 {
+    public CursorXhair CursorXhair;
     public SpriteRenderer spriteRenderer;
     //DETECTOR(ext) 
     public Transform UR_Detector;
@@ -45,6 +46,11 @@ public class AttachmentController : MonoBehaviour
             Ext2Int.collider.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 
             FindObjectOfType<Player>().objectGrabed.Add(Ext2Int.collider.gameObject);
+            if (CursorXhair.Explosives.Count >= 1)
+            {
+                CursorXhair.Explosives.RemoveAt(CursorXhair.Explosives.Count - 1);
+            }
+            //And remove from explosives
         }
     }
 }

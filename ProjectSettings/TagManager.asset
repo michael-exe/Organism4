@@ -8,7 +8,6 @@ TagManager:
   - Int_Molecule
   - Door
   - Mid_Molecule
-  - Selected_Molecule
   layers:
   - Default
   - TransparentFX
