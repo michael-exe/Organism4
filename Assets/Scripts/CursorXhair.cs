@@ -107,8 +107,8 @@ public class CursorXhair : MonoBehaviour
         }
         
         Eject();
-        
-        if(Explosives.Count >= 1)
+
+        if (Explosives.Count >= 1)
         {
             RadioExplosionRange();
         }
@@ -133,11 +133,12 @@ public class CursorXhair : MonoBehaviour
             closestObject.transform.SetParent(null);
             StartCoroutine(ChangeTag());
             
-
+            //ADD TO EXPLOSIVE LIST
             if (Player.objectGrabed.Count >= 1)
             {
                 Explosives.Add(Player.objectGrabed.Last());
             }
+            //ONLY THEN remove
             Player.objectGrabed.RemoveAt(Player.objectGrabed.Count - 1);         
         }  
     }
@@ -154,20 +155,21 @@ public class CursorXhair : MonoBehaviour
         closestObject.tag = "Ext_Molecule";        
     }
 
+    //This is currently useless because it is always satisfied as it happens exactly when you eject
     void RadioExplosionRange()
     {
-        Collider2D[] moleculeColliders = Physics2D.OverlapCircleAll(Player.transform.position, 6f);
+        Collider2D[] RadioRange = Physics2D.OverlapCircleAll(Player.transform.position, 6f);
 
         var ExplosiveMolecules = Explosives.Last();
 
-        foreach (Collider2D moleculeCollider in moleculeColliders)
+        foreach (Collider2D myMolecules in RadioRange)
         {
             if (ExplosiveMolecules.GetComponent<MoleculeExplosion>())
-            {   
+            {
                 ExplosiveMolecules.gameObject.GetComponent<MoleculeExplosion>().canExplode = true;
             }
         }
-    } 
+    }
 }
 
 // MUST FIX "Object reference not set to an instance of an object" caused by Destroy

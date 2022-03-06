@@ -144,6 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a61f8af8a5c3144da9f82108c11a7be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CursorXhair: {fileID: 0}
   spriteRenderer: {fileID: 783248698307755196}
   UR_Detector: {fileID: 7572268197217508716}
   UL_Detector: {fileID: 7572268197118542259}
@@ -186,6 +187,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 607372ad86a7f5f4a99c0f47567aa8be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canExplode: 0
+  circleRadius: 1
+  explosionFX: {fileID: 3176260493616640413, guid: 34d3ee46d2b1feb4b89679fb3183c62f, type: 3}
 --- !u!1 &7572268196317734751
 GameObject:
   m_ObjectHideFlags: 0
