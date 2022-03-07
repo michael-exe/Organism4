@@ -155,7 +155,7 @@ public class CursorXhair : MonoBehaviour
         closestObject.tag = "Ext_Molecule";        
     }
 
-    //This is currently useless because it is always satisfied as it happens exactly when you eject
+    //This is currently not very useful because it is always satisfied as it happens exactly when you eject
     void RadioExplosionRange()
     {
         Collider2D[] RadioRange = Physics2D.OverlapCircleAll(Player.transform.position, 6f);

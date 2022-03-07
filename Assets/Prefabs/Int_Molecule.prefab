@@ -188,7 +188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canExplode: 0
-  circleRadius: 1
+  circleRadius: 1.5
   explosionFX: {fileID: 3176260493616640413, guid: 34d3ee46d2b1feb4b89679fb3183c62f, type: 3}
 --- !u!1 &7572268196317734751
 GameObject:

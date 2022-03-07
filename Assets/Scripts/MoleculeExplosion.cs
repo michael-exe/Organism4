@@ -7,8 +7,10 @@ using System.Linq;
 public class MoleculeExplosion : MonoBehaviour
 {
     public bool canExplode = false;
-    public float circleRadius = 6f;
+    public float circleRadius = 2;
+    float explosionDamage = 50f;
     public GameObject explosionFX;
+    public EnemyHealth enemyHealth;
     //public Player Player;
     //public CursorXhair CursorXhair;
 
@@ -47,7 +49,7 @@ public class MoleculeExplosion : MonoBehaviour
 
         foreach (Collider2D colliding in overlappingColliders)
         {
-            //must add PlayerHealth as well
+            //will add PlayerHealth as well
             if (canExplode == true)
             {
                 //Vector2 moleculePos = transform.position;
@@ -56,8 +58,10 @@ public class MoleculeExplosion : MonoBehaviour
                 Destroy(gameObject);
                 if (colliding.GetComponent<EnemyHealth>())
                 {
-                    Debug.Log("boom, I killed an enemy");
-                    colliding.GetComponent<EnemyHealth>().EnemyDead();
+                    Debug.Log("boom, I damaged an enemy");
+                    EnemyHealth enemyHealthScript = colliding.GetComponent<EnemyHealth>();
+                    enemyHealthScript.TakeDamage(explosionDamage);
+                    //colliding.GetComponent<EnemyHealth>().EnemyDead();
                 }
             }
         }
