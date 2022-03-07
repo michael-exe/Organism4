@@ -52,6 +52,7 @@ public class MoleculeExplosion : MonoBehaviour
             //will add PlayerHealth as well
             if (canExplode == true)
             {
+                //In the future I want to change this into the collider of the explosionFX, because I like it has a lingering effect.
                 //Vector2 moleculePos = transform.position;
                 var newExplosion = Instantiate(explosionFX, transform.position, Quaternion.identity);
                 Destroy(newExplosion, 0.5f);
