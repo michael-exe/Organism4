@@ -49,3 +49,4 @@ public class EnemyHealth : MonoBehaviour
         }
     }
 }
+//Make a character flash when taking damage https://answers.unity.com/questions/1448131/make-character-flash-when-taking-damage.html

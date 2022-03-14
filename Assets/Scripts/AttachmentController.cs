@@ -6,6 +6,7 @@ public class AttachmentController : MonoBehaviour
     //really: HolderController
 {
     public CursorXhair CursorXhair;
+
     public SpriteRenderer spriteRenderer;
     //DETECTOR(ext) 
     public Transform UR_Detector;
@@ -50,8 +51,9 @@ public class AttachmentController : MonoBehaviour
             {
                 CursorXhair.Explosives.RemoveAt(CursorXhair.Explosives.Count - 1);
             }
-            //And remove from explosives
-        }
+            
+    //And remove from explosives
+}
     }
 }
 //https://youtu.be/U8gUnpeaMbQ Snake

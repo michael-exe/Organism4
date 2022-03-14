@@ -156,6 +156,8 @@ public class CursorXhair : MonoBehaviour
     }
 
     //This is currently not very useful because it is always satisfied as it happens exactly when you eject
+    //meaning it instantly checks the range and from then they can always explode
+    //Still I need a way to turn canExplode true
     void RadioExplosionRange()
     {
         Collider2D[] RadioRange = Physics2D.OverlapCircleAll(Player.transform.position, 6f);

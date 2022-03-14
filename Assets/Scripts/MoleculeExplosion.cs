@@ -32,6 +32,7 @@ public class MoleculeExplosion : MonoBehaviour
         //    }
         //}
 
+        //RIGHT CLICK TO EXPLODE
         if (Input.GetMouseButton(1))
         { 
             CheckForDestructible();
@@ -52,7 +53,7 @@ public class MoleculeExplosion : MonoBehaviour
             //will add PlayerHealth as well
             if (canExplode == true)
             {
-                //In the future I want to change this into the collider of the explosionFX, because I like it has a lingering effect.
+                //In the future I want to change this into the collider of the explosionFX, because I'd like it to have a lingering effect.
                 //Vector2 moleculePos = transform.position;
                 var newExplosion = Instantiate(explosionFX, transform.position, Quaternion.identity);
                 Destroy(newExplosion, 0.5f);
