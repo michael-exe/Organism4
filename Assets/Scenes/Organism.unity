@@ -2792,6 +2792,7 @@ MonoBehaviour:
   - {fileID: 1871658892}
   - {fileID: 555024794}
   - {fileID: 933681838}
+  waitTime: 2
   canTutorial: 0
 --- !u!4 &1680345265
 Transform:

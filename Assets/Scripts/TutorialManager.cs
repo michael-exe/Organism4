@@ -8,12 +8,13 @@ public class TutorialManager : MonoBehaviour
     public CursorXhair CursorXhairScript;
     public GameObject[] popUps;
     private int popUpIndex;
+    public float waitTime = 2f;
 
     public bool canTutorial = false;
 
     private void Update()
     {
-        for (int i = 0; i < popUps.Length; i++)
+        for(int i = 0; i < popUps.Length; i++)
         {
             if(i == popUpIndex)
             {
@@ -26,9 +27,16 @@ public class TutorialManager : MonoBehaviour
         }
         if(popUpIndex == 0)
         {
-            if(Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
+            if(waitTime <= 0)
             {
-                popUpIndex++;
+                if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
+                {
+                    popUpIndex++;
+                }
+            }
+            else
+            {
+                waitTime -= Time.deltaTime;
             }
         }
         else if (popUpIndex == 1)
