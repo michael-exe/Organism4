@@ -116,17 +116,19 @@ public class CursorXhair : MonoBehaviour
 
     void Eject()
     {
-        if (Player.objectGrabed.Count >= 1 && Input.GetMouseButton(0))
+        if (Player.objectGrabed.Count >= 1 && Input.GetKeyDown(KeyCode.Mouse0))
         {
             //var obj = Player.objectGrabed.Last();
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             var closestObject = collidingObjects.OrderBy(_ => (_.transform.position - (Vector3)mousePos).sqrMagnitude).First();
 
+            //Maybe this part does not work well
             Transform[] MoleculeChildren = closestObject.GetComponentsInChildren<Transform>();
             foreach (Transform item in MoleculeChildren)
             {
                 item.tag = "Mid_Molecule";
             }
+
             closestObject.tag = "Mid_Molecule";
             closestObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
             closestObject.GetComponent<Rigidbody2D>().AddForce(closestObject.transform.parent.up * Player.throwSpeed);
@@ -137,13 +139,21 @@ public class CursorXhair : MonoBehaviour
             if (Player.objectGrabed.Count >= 1)
             {
                 Explosives.Add(Player.objectGrabed.Last());
+                //Explosives.Add(closestObject.GetComponentsInChildren<Transform>());
+                Debug.Log("Explosive Added");
+
+
             }
             //ONLY THEN remove
-            Player.objectGrabed.RemoveAt(Player.objectGrabed.Count - 1);         
-        }  
+            Player.objectGrabed.RemoveAt(Player.objectGrabed.Count - 1);
+            Debug.Log("Object Grabed removed");
+
+
+        }
     }
     IEnumerator ChangeTag()
     {
+       
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         var closestObject = collidingObjects.OrderBy(_ => (_.transform.position - (Vector3)mousePos).sqrMagnitude).First();
         yield return new WaitForSeconds(3f);
@@ -154,6 +164,14 @@ public class CursorXhair : MonoBehaviour
         }
         closestObject.tag = "Ext_Molecule";        
     }
+
+    //void RadioExplosionRange()
+    //{
+    //    if (Explosives.Last().GetComponent<MoleculeExplosion>())
+    //    {
+    //        Explosives.Last().gameObject.GetComponent<MoleculeExplosion>().canExplode = true;
+    //    }
+    //}
 
     //This is currently not very useful because it is always satisfied as it happens exactly when you eject
     //meaning it instantly checks the range and from then they can always explode
@@ -166,6 +184,7 @@ public class CursorXhair : MonoBehaviour
 
         foreach (Collider2D myMolecules in RadioRange)
         {
+            //I am not using myMolecules... why NOT?!
             if (ExplosiveMolecules.GetComponent<MoleculeExplosion>())
             {
                 ExplosiveMolecules.gameObject.GetComponent<MoleculeExplosion>().canExplode = true;

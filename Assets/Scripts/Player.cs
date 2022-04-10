@@ -41,7 +41,6 @@ public class Player : MonoBehaviour
         ALL_Attach(DR_Detector.position, DR_Holder);
         ALL_Attach(DL_Detector.position, DL_Holder);
 
-        //Eject();
 
         LevelRestart(); 
     }
@@ -65,14 +64,33 @@ public class Player : MonoBehaviour
             Ext2Int.collider.gameObject.transform.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
             Ext2Int.collider.gameObject.tag = "Int_Molecule";
             Ext2Int.collider.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            
+            //FindObjectOfType<Player>().objectGrabed.Add(Ext2Int.collider.gameObject);
+            objectGrabed.Add(Ext2Int.collider.gameObject);
+            Debug.Log("ObjectGrabed");
 
-            FindObjectOfType<Player>().objectGrabed.Add(Ext2Int.collider.gameObject);
-            if (CursorXhair.Explosives.Count >= 1)
-            {
-                CursorXhair.Explosives.RemoveAt(CursorXhair.Explosives.Count - 1);
-            }
+            CursorXhair.Explosives.Remove(Ext2Int.collider.gameObject);
+            Debug.Log("Explosives removed");
+
+
+            //check if object in a list is in another list unity
+
+            //if (CursorXhair.Explosives.Count >= 1)
+            //{
+            //    CursorXhair.Explosives.Remove(CursorXhair.Explosives.Last());
+            //    Debug.Log("Explosives removed");
+            //}
+
+            //if (CursorXhair.Explosives.Count >= 1)
+            //{
+            //    CursorXhair.Explosives.Remove(CursorXhair.Explosives.Last());
+            //    Debug.Log("Explosives removed");
+            //}
+
             //And remove from explosives
         }
+
+       
     }
 
     void LevelRestart() {

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+
 
 public class AttachmentController : MonoBehaviour
     //really: HolderController
@@ -47,13 +49,15 @@ public class AttachmentController : MonoBehaviour
             Ext2Int.collider.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 
             FindObjectOfType<Player>().objectGrabed.Add(Ext2Int.collider.gameObject);
-            if (CursorXhair.Explosives.Count >= 1)
-            {
-                CursorXhair.Explosives.RemoveAt(CursorXhair.Explosives.Count - 1);
-            }
-            
-    //And remove from explosives
-}
+            //CursorXhair.Explosives.Remove(Ext2Int.collider.gameObject);
+
+            //if (CursorXhair.Explosives.Count >= 1)
+            //{
+            //    CursorXhair.Explosives.RemoveAt(CursorXhair.Explosives.Count - 1);
+            //}
+
+            //And remove from explosives
+        }
     }
 }
 //https://youtu.be/U8gUnpeaMbQ Snake
