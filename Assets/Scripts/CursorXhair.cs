@@ -12,7 +12,7 @@ public class CursorXhair : MonoBehaviour
     public List<SpriteRenderer> collidingObjects = new List<SpriteRenderer>();
     private LayerMask mask;
     public List<GameObject> Explosives;
-    //this won't do because molecule explosion is a script on a prefab!!!!!!!!!!!!!!!!
+    //this won't do because molecule explosion is a script on a prefab!
     public MoleculeExplosion moleculeExplosion;
     //EXPLOSION
     //public float expRadius = 10f;            // Radius within which enemies are damaged.

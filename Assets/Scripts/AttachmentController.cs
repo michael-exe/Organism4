@@ -49,7 +49,8 @@ public class AttachmentController : MonoBehaviour
             Ext2Int.collider.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 
             FindObjectOfType<Player>().objectGrabed.Add(Ext2Int.collider.gameObject);
-            //CursorXhair.Explosives.Remove(Ext2Int.collider.gameObject);
+            
+            CursorXhair.Explosives.Remove(Ext2Int.collider.gameObject);
 
             //if (CursorXhair.Explosives.Count >= 1)
             //{

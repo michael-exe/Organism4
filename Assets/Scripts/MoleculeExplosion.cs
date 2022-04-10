@@ -19,7 +19,7 @@ public class MoleculeExplosion : MonoBehaviour
     private void Update()
     {
         //RIGHT CLICK TO EXPLODE
-        if (Input.GetMouseButton(1))
+        if (Input.GetKeyDown(KeyCode.Mouse1))
         { 
             CheckForDestructible();
             if (gameObject.tag == "Mid_Molecule")

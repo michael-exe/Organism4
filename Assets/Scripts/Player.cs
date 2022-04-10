@@ -69,9 +69,9 @@ public class Player : MonoBehaviour
             objectGrabed.Add(Ext2Int.collider.gameObject);
             Debug.Log("ObjectGrabed");
 
+            //This is the part that does not work
             CursorXhair.Explosives.Remove(Ext2Int.collider.gameObject);
             Debug.Log("Explosives removed");
-
 
             //check if object in a list is in another list unity
 
@@ -88,11 +88,8 @@ public class Player : MonoBehaviour
             //}
 
             //And remove from explosives
-        }
-
-       
+        }       
     }
-
     void LevelRestart() {
         if (Input.GetKeyDown(KeyCode.R))
         {
