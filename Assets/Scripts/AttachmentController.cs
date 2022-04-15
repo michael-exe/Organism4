@@ -7,7 +7,9 @@ using System.Linq;
 public class AttachmentController : MonoBehaviour
     //really: HolderController
 {
-    public CursorXhair CursorXhair;
+    public CursorXhair CursorXhair; 
+    private CursorXhair cursorXhair;
+    private Player player;
 
     public SpriteRenderer spriteRenderer;
     //DETECTOR(ext) 
@@ -48,9 +50,30 @@ public class AttachmentController : MonoBehaviour
             Ext2Int.collider.gameObject.tag = "Int_Molecule";
             Ext2Int.collider.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 
+            if (Ext2Int.collider.gameObject.GetComponent<MoleculeExplosion>().canExplode)
+            {
+                Ext2Int.collider.gameObject.GetComponent<MoleculeExplosion>().canExplode = false;
+            }
             FindObjectOfType<Player>().objectGrabed.Add(Ext2Int.collider.gameObject);
-            
-            CursorXhair.Explosives.Remove(Ext2Int.collider.gameObject);
+
+            //if (cursorXhair.Explosives.Count >= 1)
+            //{
+            //    for (int i = 0; i < cursorXhair.Explosives.Count; i++) // through the loop we will look if the molecule it's in the explosive liste
+            //    {                                                               // if yes then remove it from the list and make the the explode to false
+            //        if (cursorXhair.Explosives[i] == Ext2Int.collider.gameObject)
+            //        {
+            //            Debug.Log("ture");
+            //            cursorXhair.Explosives.Remove(Ext2Int.collider.gameObject);
+            //            Ext2Int.collider.gameObject.GetComponent<MoleculeExplosion>().canExplode = false;
+            //        }
+
+            //    }
+            //}
+            //player.objectGrabed.Add(Ext2Int.collider.gameObject);
+            //FindObjectOfType<Player>().objectGrabed.Add(Ext2Int.collider.gameObject);
+            //Debug.Log("ObjectGrabed");
+
+            //CursorXhair.Explosives.Remove(Ext2Int.collider.gameObject);
 
             //if (CursorXhair.Explosives.Count >= 1)
             //{

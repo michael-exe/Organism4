@@ -41,6 +41,9 @@ public class MoleculeExplosion : MonoBehaviour
                 //In the future I want to change this into the collider of the explosionFX, because I'd like it to have a lingering effect.
                 //Vector2 moleculePos = transform.position;
                 var newExplosion = Instantiate(explosionFX, transform.position, Quaternion.identity);
+                
+                // NEW //  when explode it should be removed form the list
+                FindObjectOfType<CursorXhair>().Explosives.Remove(gameObject);
                 Destroy(newExplosion, 0.5f);
                 Destroy(gameObject);
                 if (colliding.GetComponent<EnemyHealth>())

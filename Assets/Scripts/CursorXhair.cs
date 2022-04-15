@@ -157,12 +157,17 @@ public class CursorXhair : MonoBehaviour
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         var closestObject = collidingObjects.OrderBy(_ => (_.transform.position - (Vector3)mousePos).sqrMagnitude).First();
         yield return new WaitForSeconds(3f);
-        Transform[] MoleculeChildren = closestObject.GetComponentsInChildren<Transform>();
-        foreach (Transform item in MoleculeChildren)
+
+        // NEW // checking if still exsting and didn't explode 
+        if (closestObject)
         {
-            item.tag = "Ext_Molecule";
+            Transform[] MoleculeChildren = closestObject.GetComponentsInChildren<Transform>();
+            foreach (Transform item in MoleculeChildren)
+            {
+                item.tag = "Ext_Molecule";
+            }
+            closestObject.tag = "Ext_Molecule";
         }
-        closestObject.tag = "Ext_Molecule";        
     }
 
     //void RadioExplosionRange()

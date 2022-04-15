@@ -27,8 +27,13 @@ public class Player : MonoBehaviour
     public Transform UL_Holder;
     public Transform DR_Holder;
     public Transform DL_Holder;
+
+    private CursorXhair cursorXhair;
     //public Collider2D membraneCollider;
 
+    private void Start() {
+        cursorXhair = FindObjectOfType<CursorXhair>();
+    }
     void Update()
     {
         //INPUT
@@ -57,7 +62,7 @@ public class Player : MonoBehaviour
 
         RaycastHit2D Ext2Int = Physics2D.Raycast(pos, Vector2.zero, 0);
 
-        if (Ext2Int.collider != null && Ext2Int.collider.tag == "Ext_Molecule")
+        if (Ext2Int.collider != null && (Ext2Int.collider.tag == "Ext_Molecule"))
         {
             Ext2Int.collider.transform.parent = _holder;
             Ext2Int.collider.gameObject.transform.position = _holder.position;
@@ -66,12 +71,28 @@ public class Player : MonoBehaviour
             Ext2Int.collider.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             
             //FindObjectOfType<Player>().objectGrabed.Add(Ext2Int.collider.gameObject);
+
+            // NEW // checking if number of explosives is greater or equal to 1
+            if(cursorXhair.Explosives.Count >= 1){
+                for (int i = 0; i<  cursorXhair.Explosives.Count  ; i++) // through the loop we will look if the molecule it's in the explosive liste
+            {                                                               // if yes then remove it from the list and make the the explode to false
+                if(cursorXhair.Explosives[i] == Ext2Int.collider.gameObject){
+                    Debug.Log("ture");
+                cursorXhair.Explosives.Remove(Ext2Int.collider.gameObject);
+                Ext2Int.collider.gameObject.GetComponent<MoleculeExplosion>().canExplode = false;
+                }
+                    
+            }
+            }
+            
+                
+            
             objectGrabed.Add(Ext2Int.collider.gameObject);
             Debug.Log("ObjectGrabed");
 
             //This is the part that does not work
-            CursorXhair.Explosives.Remove(Ext2Int.collider.gameObject);
-            Debug.Log("Explosives removed");
+//            CursorXhair.Explosives.Remove(Ext2Int.collider.gameObject);
+  //          Debug.Log("Explosives removed");
 
             //check if object in a list is in another list unity
 
