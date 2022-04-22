@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour
 {
     public CursorXhair CursorXhair;
-    
+
     public float moveSpeed = 5f;
 
     public Rigidbody2D rb;
@@ -31,7 +31,8 @@ public class Player : MonoBehaviour
     private CursorXhair cursorXhair;
     //public Collider2D membraneCollider;
 
-    private void Start() {
+    private void Start()
+    {
         cursorXhair = FindObjectOfType<CursorXhair>();
     }
     void Update()
@@ -47,7 +48,7 @@ public class Player : MonoBehaviour
         ALL_Attach(DL_Detector.position, DL_Holder);
 
 
-        LevelRestart(); 
+        LevelRestart();
     }
     //once/frame independent from framerate
     private void FixedUpdate()
@@ -69,30 +70,52 @@ public class Player : MonoBehaviour
             Ext2Int.collider.gameObject.transform.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
             Ext2Int.collider.gameObject.tag = "Int_Molecule";
             Ext2Int.collider.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            
+
             //FindObjectOfType<Player>().objectGrabed.Add(Ext2Int.collider.gameObject);
 
-            // NEW // checking if number of explosives is greater or equal to 1
-            if(cursorXhair.Explosives.Count >= 1){
-                for (int i = 0; i<  cursorXhair.Explosives.Count  ; i++) // through the loop we will look if the molecule it's in the explosive liste
-            {                                                               // if yes then remove it from the list and make the the explode to false
-                if(cursorXhair.Explosives[i] == Ext2Int.collider.gameObject){
-                    Debug.Log("ture");
-                cursorXhair.Explosives.Remove(Ext2Int.collider.gameObject);
-                Ext2Int.collider.gameObject.GetComponent<MoleculeExplosion>().canExplode = false;
+            
+            AttachmentController[] MoleculeChildren = Ext2Int.collider.GetComponentsInChildren<AttachmentController>();
+
+
+            // NEW // loop throw the molecule and  remove them from the explosive list
+            foreach (AttachmentController item in MoleculeChildren)
+            {
+                if (MoleculeChildren.Length > 0)
+                {
+                    for (int i = 0; i < cursorXhair.Explosives.Count; i++)
+                    {
+                        if (item.gameObject == cursorXhair.Explosives[i])
+                        {   Debug.Log("Hi");
+                            cursorXhair.Explosives.Remove(item.gameObject);
+                            item.gameObject.GetComponent<MoleculeExplosion>().canExplode = false;
+                            i = 0;
+                        }
+                    }
                 }
-                    
             }
+            // NEW // checking if number of explosives is greater or equal to 1
+            if (cursorXhair.Explosives.Count >= 1)
+            {
+                for (int i = 0; i < cursorXhair.Explosives.Count; i++) // through the loop we will look if the molecule it's in the explosive liste
+                {                                                               // if yes then remove it from the list and make the the explode to false
+                    if (cursorXhair.Explosives[i] == Ext2Int.collider.gameObject)
+                    {
+                        Debug.Log("ture");
+                        cursorXhair.Explosives.Remove(Ext2Int.collider.gameObject);
+                        Ext2Int.collider.gameObject.GetComponent<MoleculeExplosion>().canExplode = false;
+                    }
+
+                }
             }
-            
-                
-            
+
+
+
             objectGrabed.Add(Ext2Int.collider.gameObject);
             Debug.Log("ObjectGrabed");
 
             //This is the part that does not work
-//            CursorXhair.Explosives.Remove(Ext2Int.collider.gameObject);
-  //          Debug.Log("Explosives removed");
+            //            CursorXhair.Explosives.Remove(Ext2Int.collider.gameObject);
+            //          Debug.Log("Explosives removed");
 
             //check if object in a list is in another list unity
 
@@ -109,9 +132,10 @@ public class Player : MonoBehaviour
             //}
 
             //And remove from explosives
-        }       
+        }
     }
-    void LevelRestart() {
+    void LevelRestart()
+    {
         if (Input.GetKeyDown(KeyCode.R))
         {
             SceneManager.LoadScene("Organism");

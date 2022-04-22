@@ -123,10 +123,13 @@ public class CursorXhair : MonoBehaviour
             var closestObject = collidingObjects.OrderBy(_ => (_.transform.position - (Vector3)mousePos).sqrMagnitude).First();
 
             //Maybe this part does not work well
-            Transform[] MoleculeChildren = closestObject.GetComponentsInChildren<Transform>();
-            foreach (Transform item in MoleculeChildren)
+            AttachmentController[] MoleculeChildren = closestObject.GetComponentsInChildren<AttachmentController>();
+            foreach (AttachmentController item in MoleculeChildren)
             {
-                item.tag = "Mid_Molecule";
+                item.gameObject.tag = "Mid_Molecule";
+                Explosives.Add(item.gameObject);
+                Player.objectGrabed.Remove(item.gameObject);
+                item.GetComponent<MoleculeExplosion>().canExplode = true;
             }
 
             closestObject.tag = "Mid_Molecule";
@@ -138,15 +141,15 @@ public class CursorXhair : MonoBehaviour
             //ADD TO EXPLOSIVE LIST
             if (Player.objectGrabed.Count >= 1)
             {
-                Explosives.Add(Player.objectGrabed.Last());
+                //Explosives.Add(Player.objectGrabed.Last());
                 //Explosives.Add(closestObject.GetComponentsInChildren<Transform>());
                 Debug.Log("Explosive Added");
 
 
             }
             //ONLY THEN remove
-            Player.objectGrabed.RemoveAt(Player.objectGrabed.Count - 1);
-            Debug.Log("Object Grabed removed");
+           // Player.objectGrabed.RemoveAt(Player.objectGrabed.Count - 1);
+          //  Debug.Log("Object Grabed removed");
 
 
         }
@@ -159,15 +162,15 @@ public class CursorXhair : MonoBehaviour
         yield return new WaitForSeconds(3f);
 
         // NEW // checking if still exsting and didn't explode 
-        if (closestObject)
+        if(closestObject){
+             Transform[] MoleculeChildren = closestObject.GetComponentsInChildren<Transform>();
+        foreach (Transform item in MoleculeChildren)
         {
-            Transform[] MoleculeChildren = closestObject.GetComponentsInChildren<Transform>();
-            foreach (Transform item in MoleculeChildren)
-            {
-                item.tag = "Ext_Molecule";
-            }
-            closestObject.tag = "Ext_Molecule";
+            item.tag = "Ext_Molecule";
         }
+        closestObject.tag = "Ext_Molecule";  
+        }
+             
     }
 
     //void RadioExplosionRange()
