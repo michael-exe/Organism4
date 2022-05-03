@@ -15,12 +15,14 @@ public class CursorXhair : MonoBehaviour
     private float holdDownStartTime;
     public float maxForce = 800f;
     public float minForce = 100f;
+    public SpriteMask forceSpriteMask;
     //this won't do because molecule explosion is a script on a prefab!
     public MoleculeExplosion moleculeExplosion;
 
     private void Awake()
     {
         mask = ~(1 << LayerMask.NameToLayer("Player"));
+        HideForce();
     }
 
     void Update()
@@ -109,6 +111,10 @@ public class CursorXhair : MonoBehaviour
             RadioExplosionRange();
         }
     }
+    private void HideForce()
+    {
+        forceSpriteMask.alphaCutoff = 1;
+    }
 
     void Eject()
     {
@@ -141,6 +147,13 @@ public class CursorXhair : MonoBehaviour
             closestObject.transform.SetParent(null);
             StartCoroutine(ChangeTag());
         }
+
+        if (Player.objectGrabed.Count >= 1 && Input.GetKey(KeyCode.Mouse0))
+        {
+            float holdDownTime = Time.time - holdDownStartTime;
+            ShowForce(CalculateHoldDownForce(holdDownTime));
+        }
+
     }
 
     private float CalculateHoldDownForce(float holdTime)
@@ -171,6 +184,11 @@ public class CursorXhair : MonoBehaviour
         closestObject.tag = "Ext_Molecule";  
         }
              
+    }
+
+    public void ShowForce(float force)
+    {
+        forceSpriteMask.alphaCutoff = 1 - force / maxForce;
     }
 
     //void RadioExplosionRange()
