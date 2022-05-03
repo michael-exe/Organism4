@@ -125,6 +125,7 @@ public class CursorXhair : MonoBehaviour
 
         if (Player.objectGrabed.Count >= 1 && Input.GetKeyUp(KeyCode.Mouse0))
         {
+            HideForce();
             //var obj = Player.objectGrabed.Last();
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             var closestObject = collidingObjects.OrderBy(_ => (_.transform.position - (Vector3)mousePos).sqrMagnitude).First();
