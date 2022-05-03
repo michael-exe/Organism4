@@ -12,15 +12,11 @@ public class CursorXhair : MonoBehaviour
     public List<SpriteRenderer> collidingObjects = new List<SpriteRenderer>();
     private LayerMask mask;
     public List<GameObject> Explosives;
+    private float holdDownStartTime;
+    public float maxForce = 800f;
+    public float minForce = 100f;
     //this won't do because molecule explosion is a script on a prefab!
     public MoleculeExplosion moleculeExplosion;
-    //EXPLOSION
-    //public float expRadius = 10f;            // Radius within which enemies are damaged.
-    //public float expForce = 100f;            // Force that enemies are thrown from the blast.
-    //public GameObject soundPrefab;            // Audioclip of explosion.
-    //public GameObject explosionPrefab;        // Prefab of explosion effect.
-    //public float Damage = 100;
-
 
     private void Awake()
     {
@@ -118,6 +114,11 @@ public class CursorXhair : MonoBehaviour
     {
         if (Player.objectGrabed.Count >= 1 && Input.GetKeyDown(KeyCode.Mouse0))
         {
+            holdDownStartTime = Time.time;
+        }
+
+        if (Player.objectGrabed.Count >= 1 && Input.GetKeyUp(KeyCode.Mouse0))
+        {
             //var obj = Player.objectGrabed.Last();
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             var closestObject = collidingObjects.OrderBy(_ => (_.transform.position - (Vector3)mousePos).sqrMagnitude).First();
@@ -134,25 +135,24 @@ public class CursorXhair : MonoBehaviour
 
             closestObject.tag = "Mid_Molecule";
             closestObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-            closestObject.GetComponent<Rigidbody2D>().AddForce(closestObject.transform.parent.up * Player.throwSpeed);
+            float holdDownTime = Time.time - holdDownStartTime;
+            //closestObject.GetComponent<Rigidbody2D>().AddForce(closestObject.transform.parent.up * Player.throwSpeed);
+            closestObject.GetComponent<Rigidbody2D>().AddForce(closestObject.transform.parent.up * CalculateHoldDownForce(holdDownTime));
             closestObject.transform.SetParent(null);
             StartCoroutine(ChangeTag());
-            
-            //ADD TO EXPLOSIVE LIST
-            if (Player.objectGrabed.Count >= 1)
-            {
-                //Explosives.Add(Player.objectGrabed.Last());
-                //Explosives.Add(closestObject.GetComponentsInChildren<Transform>());
-                Debug.Log("Explosive Added");
-
-
-            }
-            //ONLY THEN remove
-           // Player.objectGrabed.RemoveAt(Player.objectGrabed.Count - 1);
-          //  Debug.Log("Object Grabed removed");
-
-
         }
+    }
+
+    private float CalculateHoldDownForce(float holdTime)
+    {
+        float maxForceHoldDownTime = 2f;
+        float holdTimeNormalized = Mathf.Clamp01(holdTime / maxForceHoldDownTime);
+        float force = holdTimeNormalized * maxForce;        
+        if (force < minForce)
+        {
+            return minForce;
+        }
+        return force;
     }
     IEnumerator ChangeTag()
     {
@@ -208,3 +208,5 @@ public class CursorXhair : MonoBehaviour
 // Getting grandchildren with depth-firts research GetComponentInChildren https://answers.unity.com/questions/908455/how-do-i-get-components-in-grandchildren.html
 // foreach and for [i] loop to get children https://answers.unity.com/questions/594210/get-all-children-gameobjects.html
 // Apply the same tag to all children of an object: https://answers.unity.com/questions/167644/is-there-an-easy-way-to-apply-the-same-tag-to-all.html
+// Throw Force: https://www.youtube.com/watch?v=2BJyG54eP4w
+// Physics Materials: https://gruman.co/2d-pool-in-unity-game-dev-tutorial/

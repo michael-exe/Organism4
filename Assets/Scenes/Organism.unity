@@ -1505,6 +1505,8 @@ MonoBehaviour:
   originalSprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   collidingObjects: []
   Explosives: []
+  maxForce: 900
+  minForce: 150
   moleculeExplosion: {fileID: 0}
 --- !u!212 &912645273
 SpriteRenderer:
