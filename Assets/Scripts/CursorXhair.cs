@@ -223,7 +223,6 @@ public class CursorXhair : MonoBehaviour
 // MUST FIX "Object reference not set to an instance of an object" caused by Destroy
 
 // AoE https://answers.unity.com/questions/1116039/2d-area-of-effect-script.html
-
 // Getting grandchildren with depth-firts research GetComponentInChildren https://answers.unity.com/questions/908455/how-do-i-get-components-in-grandchildren.html
 // foreach and for [i] loop to get children https://answers.unity.com/questions/594210/get-all-children-gameobjects.html
 // Apply the same tag to all children of an object: https://answers.unity.com/questions/167644/is-there-an-easy-way-to-apply-the-same-tag-to-all.html

@@ -31,6 +31,8 @@ public class Player : MonoBehaviour
     private CursorXhair cursorXhair;
     //public Collider2D membraneCollider;
 
+    public GameObject FauxCollider;
+
     private void Start()
     {
         cursorXhair = FindObjectOfType<CursorXhair>();
@@ -100,7 +102,7 @@ public class Player : MonoBehaviour
                 {                                                               // if yes then remove it from the list and make the the explode to false
                     if (cursorXhair.Explosives[i] == Ext2Int.collider.gameObject)
                     {
-                        Debug.Log("ture");
+                        Debug.Log("true");
                         cursorXhair.Explosives.Remove(Ext2Int.collider.gameObject);
                         Ext2Int.collider.gameObject.GetComponent<MoleculeExplosion>().canExplode = false;
                     }
@@ -112,6 +114,7 @@ public class Player : MonoBehaviour
 
             objectGrabed.Add(Ext2Int.collider.gameObject);
             Debug.Log("ObjectGrabed");
+            FauxSpawning();
 
             //This is the part that does not work
             //            CursorXhair.Explosives.Remove(Ext2Int.collider.gameObject);
@@ -134,6 +137,15 @@ public class Player : MonoBehaviour
             //And remove from explosives
         }
     }
+
+    void FauxSpawning()
+    {
+
+        Instantiate(FauxCollider, objectGrabed.Last().transform.position, Quaternion.identity);
+        FauxCollider.transform.parent = transform;
+
+    }
+
     void LevelRestart()
     {
         if (Input.GetKeyDown(KeyCode.R))
