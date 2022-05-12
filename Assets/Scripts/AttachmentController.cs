@@ -8,6 +8,7 @@ public class AttachmentController : MonoBehaviour
     //really: HolderController
 {
     public CursorXhair CursorXhair;
+    public Player Player;
 
     public SpriteRenderer spriteRenderer;
     //DETECTOR(ext) 
@@ -23,9 +24,12 @@ public class AttachmentController : MonoBehaviour
 
     private CursorXhair cr;
 
+    public Transform wallsDetection;
+
     private void Start()
     {
         cr = FindObjectOfType<CursorXhair>();
+        Player = FindObjectOfType<Player>();
     }
 
     // Update is called once per frame
@@ -37,6 +41,16 @@ public class AttachmentController : MonoBehaviour
         ALL_Attach(UL_Detector.position,UL_Holder);
         ALL_Attach(DR_Detector.position,DR_Holder);
         ALL_Attach(DL_Detector.position,DL_Holder);
+
+        RaycastHit2D wallsInfo = Physics2D.Raycast(wallsDetection.position, Vector2.one, 2f);
+
+        if (wallsInfo.collider.tag == "Wall")
+        {
+            //This gets stucked when evading
+
+            Player.movement.x = -Input.GetAxisRaw("Horizontal");
+            Player.movement.y = -Input.GetAxisRaw("Vertical");
+        }
     }
 
     void ALL_Attach(Vector2 pos,Transform _holder){
@@ -60,8 +74,8 @@ public class AttachmentController : MonoBehaviour
             }
             
             FindObjectOfType<Player>().objectGrabed.Add(Ext2Int.collider.gameObject);
-            
-//            CursorXhair.Explosives.Remove(Ext2Int.collider.gameObject);
+
+            //CursorXhair.Explosives.Remove(Ext2Int.collider.gameObject);
 
             //if (CursorXhair.Explosives.Count >= 1)
             //{
@@ -76,3 +90,5 @@ public class AttachmentController : MonoBehaviour
 //https://youtu.be/1uq43EIzo-U Grab
 //https://youtu.be/cIeWhztKyAg Asteroids
 //https://answers.unity.com/questions/1455956/using-function-return-in-if-statement.html 
+//https://forum.unity.com/threads/how-to-detect-wall.652369/
+//https://www.youtube.com/watch?v=V01JyQjVm2A character movement with walls

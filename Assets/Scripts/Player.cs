@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     public float moveSpeed = 5f;
 
     public Rigidbody2D rb;
-    Vector2 movement;
+    public Vector2 movement;
 
     public float throwSpeed;
     public List<GameObject> objectGrabed;
@@ -31,7 +31,9 @@ public class Player : MonoBehaviour
     private CursorXhair cursorXhair;
     //public Collider2D membraneCollider;
 
-    public GameObject FauxCollider;
+    //public GameObject FauxCollider;
+
+    //public GameObject PlayerItself;
 
     private void Start()
     {
@@ -48,7 +50,6 @@ public class Player : MonoBehaviour
         ALL_Attach(UL_Detector.position, UL_Holder);
         ALL_Attach(DR_Detector.position, DR_Holder);
         ALL_Attach(DL_Detector.position, DL_Holder);
-
 
         LevelRestart();
     }
@@ -110,11 +111,10 @@ public class Player : MonoBehaviour
                 }
             }
 
-
-
             objectGrabed.Add(Ext2Int.collider.gameObject);
             Debug.Log("ObjectGrabed");
-            FauxSpawning();
+            
+            //FauxSpawning();
 
             //This is the part that does not work
             //            CursorXhair.Explosives.Remove(Ext2Int.collider.gameObject);
@@ -138,13 +138,12 @@ public class Player : MonoBehaviour
         }
     }
 
-    void FauxSpawning()
-    {
-
-        Instantiate(FauxCollider, objectGrabed.Last().transform.position, Quaternion.identity);
-        FauxCollider.transform.parent = transform;
-
-    }
+    //void FauxSpawning()
+    //{
+    //    Vector3 Adjustment = new Vector3(1f, 1f);
+    //    var Faux = Instantiate(FauxCollider, objectGrabed.Last().transform.position += Adjustment, Quaternion.identity);
+    //    Faux.transform.SetParent(gameObject.transform);
+    //}
 
     void LevelRestart()
     {
