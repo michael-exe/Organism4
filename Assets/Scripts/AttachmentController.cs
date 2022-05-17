@@ -44,13 +44,13 @@ public class AttachmentController : MonoBehaviour
 
         RaycastHit2D wallsInfo = Physics2D.Raycast(wallsDetection.position, Vector2.one, 2f);
 
-        if (wallsInfo.collider.tag == "Wall")
-        {
-            //This gets stucked when evading
+        //if (wallsInfo.collider.tag == "Wall")
+        //{
+        //    //This gets stucked when evading
 
-            Player.movement.x = -Input.GetAxisRaw("Horizontal");
-            Player.movement.y = -Input.GetAxisRaw("Vertical");
-        }
+        //    Player.movement.x = -Input.GetAxisRaw("Horizontal");
+        //    Player.movement.y = -Input.GetAxisRaw("Vertical");
+        //}
     }
 
     void ALL_Attach(Vector2 pos,Transform _holder){
