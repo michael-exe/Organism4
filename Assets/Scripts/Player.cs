@@ -112,6 +112,7 @@ public class Player : MonoBehaviour
             }
 
             objectGrabed.Add(Ext2Int.collider.gameObject);
+            //
             Debug.Log("ObjectGrabed");
             
             //FauxSpawning();
