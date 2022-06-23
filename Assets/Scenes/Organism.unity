@@ -2514,6 +2514,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerScript: {fileID: 1567286343}
+  EnemyScript: {fileID: 463487137}
   CursorXhairScript: {fileID: 912645272}
   popUps:
   - {fileID: 2017779133}
@@ -2583,7 +2584,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.5916516, y: 1}
+    m_SensorSize: {x: 1.8257713, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -2600,7 +2601,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1711021389}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.00000047683716, y: 0.00000023841858, z: -8}
+  m_LocalPosition: {x: -0.00000071525574, y: 0.00000023841858, z: -8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 421439109}
@@ -3603,12 +3604,20 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5737226997145408795, guid: f88de487f10e9d449a91057c3b96cd67, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.00000047683716
+      value: -0.00000071525574
       objectReference: {fileID: 0}
     - target: {fileID: 5737226997540745475, guid: f88de487f10e9d449a91057c3b96cd67, type: 3}
       propertyPath: forceSpriteMask
       value: 
       objectReference: {fileID: 1508843250164170438}
+    - target: {fileID: 5737226997540745475, guid: f88de487f10e9d449a91057c3b96cd67, type: 3}
+      propertyPath: EjectInstatiante
+      value: 
+      objectReference: {fileID: 8720666265114632010, guid: fda682c14fd98f84791da0dcaffb1442, type: 3}
+    - target: {fileID: 5737226998262876636, guid: f88de487f10e9d449a91057c3b96cd67, type: 3}
+      propertyPath: faux
+      value: 
+      objectReference: {fileID: 231006899910408633, guid: af7004570ac06dd4582ce0fa5da37977, type: 3}
     - target: {fileID: 5737226998262876637, guid: f88de487f10e9d449a91057c3b96cd67, type: 3}
       propertyPath: m_RootOrder
       value: 1

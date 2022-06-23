@@ -5,6 +5,7 @@ using UnityEngine;
 public class TutorialManager : MonoBehaviour
 {
     public Player PlayerScript;
+    public EnemyHealth EnemyScript;
     public CursorXhair CursorXhairScript;
     public GameObject[] popUps;
     private int popUpIndex;
@@ -55,10 +56,14 @@ public class TutorialManager : MonoBehaviour
         }
         else if (popUpIndex == 3)
         {
-            if (Input.GetMouseButton(1))
+            if (EnemyScript.enemyHealth <= 0)
             {
                 popUpIndex++;
             }
+            //if (Input.GetMouseButton(1))
+            //{
+            //    popUpIndex++;
+            //}
         }
         else if (popUpIndex == 4)
         {

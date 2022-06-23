@@ -76,7 +76,7 @@ public class Player : MonoBehaviour
 
             //FindObjectOfType<Player>().objectGrabed.Add(Ext2Int.collider.gameObject);
 
-            
+
             AttachmentController[] MoleculeChildren = Ext2Int.collider.GetComponentsInChildren<AttachmentController>();
 
 
@@ -88,7 +88,8 @@ public class Player : MonoBehaviour
                     for (int i = 0; i < cursorXhair.Explosives.Count; i++)
                     {
                         if (item.gameObject == cursorXhair.Explosives[i])
-                        {   Debug.Log("Hi");
+                        {
+                            Debug.Log("Hi");
                             cursorXhair.Explosives.Remove(item.gameObject);
                             item.gameObject.GetComponent<MoleculeExplosion>().canExplode = false;
                             i = 0;
@@ -112,9 +113,8 @@ public class Player : MonoBehaviour
             }
 
             objectGrabed.Add(Ext2Int.collider.gameObject);
-            //
             Debug.Log("ObjectGrabed");
-            
+
             //FauxSpawning();
 
             //This is the part that does not work

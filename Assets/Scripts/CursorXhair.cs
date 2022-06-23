@@ -18,6 +18,7 @@ public class CursorXhair : MonoBehaviour
     public SpriteMask forceSpriteMask;
     //this won't do because molecule explosion is a script on a prefab!
     public MoleculeExplosion moleculeExplosion;
+    public GameObject EjectInstatiante;
 
     private void Awake()
     {
@@ -27,7 +28,7 @@ public class CursorXhair : MonoBehaviour
 
     void Update()
     {
-        
+
         Vector2 playerPos = Player.transform.position;
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 debugDirection = mousePos - playerPos;
@@ -36,11 +37,11 @@ public class CursorXhair : MonoBehaviour
 
         Debug.DrawRay(playerPos, debugDirection);
 
-       //SELECT ALL SPRITES
+        //SELECT ALL SPRITES
 
-       //Select the Component SpriteRenderer (2)
-       //of the objects hit by the LinecastAll hitObjects (1-3)
-       //that have tag "Int_Molecule" (4)
+        //Select the Component SpriteRenderer (2)
+        //of the objects hit by the LinecastAll hitObjects (1-3)
+        //that have tag "Int_Molecule" (4)
         var hitObjects = Physics2D.LinecastAll(mousePos, playerPos, mask)
             .Select(_ => _.collider.GetComponent<SpriteRenderer>())
             .Where(_ => _ != null)
@@ -56,7 +57,7 @@ public class CursorXhair : MonoBehaviour
         {
             hitObject.collider.GetComponent<SpriteRenderer>();
         }
-        
+
         //PASS HIT OBJECTS' SPRITES TO LIST
 
         //Add a variable "spriteRenderer" as element in the list collidingObjects (3)
@@ -69,7 +70,7 @@ public class CursorXhair : MonoBehaviour
                 collidingObjects.Add(spriteRenderer);
             }
         }
-       
+
         //RESTORE SPRITES OF OBJECTS NO LONGER HIT
 
         //Listed as notLongerHitObjects are the objects in the list collidingObjects except for the ones that are currently being hit by LinecastAll hitObjects
@@ -87,7 +88,7 @@ public class CursorXhair : MonoBehaviour
         {
             return;
         }
-        
+
         //CHANGE SPRITE OF CLOSEST OBJECT
 
         //Arrange colldingObjects in order of distance shorter to longer between the colliding object and the mouse and pick the first one
@@ -103,7 +104,7 @@ public class CursorXhair : MonoBehaviour
         {
             spriteRenderer.sprite = originalSprite;
         }
-        
+
         Eject();
 
         if (Explosives.Count >= 1)
@@ -118,6 +119,7 @@ public class CursorXhair : MonoBehaviour
 
     void Eject()
     {
+        //Faux are now objectGrabed
         if (Player.objectGrabed.Count >= 1 && Input.GetKeyDown(KeyCode.Mouse0))
         {
             holdDownStartTime = Time.time;
@@ -129,8 +131,8 @@ public class CursorXhair : MonoBehaviour
             //var obj = Player.objectGrabed.Last();
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             var closestObject = collidingObjects.OrderBy(_ => (_.transform.position - (Vector3)mousePos).sqrMagnitude).First();
+            //Instantiate(EjectInstatiante, new Vector3(closestObject.transform.position.x, closestObject.transform.position.y), Quaternion.identity, closestObject.transform.parent);
 
-            //Maybe this part does not work well
             AttachmentController[] MoleculeChildren = closestObject.GetComponentsInChildren<AttachmentController>();
             foreach (AttachmentController item in MoleculeChildren)
             {
@@ -145,6 +147,10 @@ public class CursorXhair : MonoBehaviour
             float holdDownTime = Time.time - holdDownStartTime;
             //closestObject.GetComponent<Rigidbody2D>().AddForce(closestObject.transform.parent.up * Player.throwSpeed);
             closestObject.GetComponent<Rigidbody2D>().AddForce(closestObject.transform.parent.up * CalculateHoldDownForce(holdDownTime));
+            var EjectForce = CalculateHoldDownForce(holdDownTime);
+            Debug.Log(EjectForce);
+            closestObject.GetComponent<Rigidbody2D>().AddForce(closestObject.transform.parent.up * EjectForce);
+            //EjectInstatiante.GetComponent<Rigidbody2D>().AddForce(closestObject.transform.parent.up * EjectForce);
             closestObject.transform.SetParent(null);
             StartCoroutine(ChangeTag());
         }
@@ -161,7 +167,7 @@ public class CursorXhair : MonoBehaviour
     {
         float maxForceHoldDownTime = 2f;
         float holdTimeNormalized = Mathf.Clamp01(holdTime / maxForceHoldDownTime);
-        float force = holdTimeNormalized * maxForce;        
+        float force = holdTimeNormalized * maxForce;
         if (force < minForce)
         {
             return minForce;
@@ -170,21 +176,22 @@ public class CursorXhair : MonoBehaviour
     }
     IEnumerator ChangeTag()
     {
-       
+
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         var closestObject = collidingObjects.OrderBy(_ => (_.transform.position - (Vector3)mousePos).sqrMagnitude).First();
         yield return new WaitForSeconds(3f);
 
         // NEW // checking if still exsting and didn't explode 
-        if(closestObject){
-             Transform[] MoleculeChildren = closestObject.GetComponentsInChildren<Transform>();
-        foreach (Transform item in MoleculeChildren)
+        if (closestObject)
         {
-            item.tag = "Ext_Molecule";
+            Transform[] MoleculeChildren = closestObject.GetComponentsInChildren<Transform>();
+            foreach (Transform item in MoleculeChildren)
+            {
+                item.tag = "Ext_Molecule";
+            }
+            closestObject.tag = "Ext_Molecule";
         }
-        closestObject.tag = "Ext_Molecule";  
-        }
-             
+
     }
 
     public void ShowForce(float force)
