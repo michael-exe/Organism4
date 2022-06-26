@@ -43,14 +43,6 @@ public class AttachmentController : MonoBehaviour
         ALL_Attach(DL_Detector.position,DL_Holder);
 
         RaycastHit2D wallsInfo = Physics2D.Raycast(wallsDetection.position, Vector2.one, 2f);
-
-        //if (wallsInfo.collider.tag == "Wall")
-        //{
-        //    //This gets stucked when evading
-
-        //    Player.movement.x = -Input.GetAxisRaw("Horizontal");
-        //    Player.movement.y = -Input.GetAxisRaw("Vertical");
-        //}
     }
 
     void ALL_Attach(Vector2 pos,Transform _holder){
@@ -59,10 +51,10 @@ public class AttachmentController : MonoBehaviour
 
         if (Ext2Int.collider != null && Ext2Int.collider.tag == "Ext_Molecule" && gameObject.tag == "Int_Molecule") {
             Ext2Int.collider.transform.parent = _holder;
+
             Ext2Int.collider.gameObject.transform.position = _holder.position;
-            Ext2Int.collider.gameObject.transform.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
             Ext2Int.collider.gameObject.tag = "Int_Molecule";
-            Ext2Int.collider.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            Destroy(Ext2Int.collider.gameObject.GetComponent<Rigidbody2D>());
 
             // new
             for (int i = 0; i < cr.Explosives.Count; i++)

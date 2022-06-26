@@ -86,6 +86,7 @@ public class CursorXhair : MonoBehaviour
         //Stop when there are no more colliding objects AKA the list is empty      
         if (collidingObjects.Count == 0)
         {
+            HideForce();
             return;
         }
 
@@ -106,7 +107,10 @@ public class CursorXhair : MonoBehaviour
         }
 
         Eject();
-
+        if(!Input.GetKeyDown(KeyCode.Mouse0)){
+            Debug.Log("Hide");
+         //   HideForce();
+        }
         if (Explosives.Count >= 1)
         {
             RadioExplosionRange();
@@ -119,12 +123,12 @@ public class CursorXhair : MonoBehaviour
 
     void Eject()
     {
+       
         //Faux are now objectGrabed
         if (Player.objectGrabed.Count >= 1 && Input.GetKeyDown(KeyCode.Mouse0))
         {
             holdDownStartTime = Time.time;
         }
-
         if (Player.objectGrabed.Count >= 1 && Input.GetKeyUp(KeyCode.Mouse0))
         {
             HideForce();
@@ -142,6 +146,15 @@ public class CursorXhair : MonoBehaviour
                 item.GetComponent<MoleculeExplosion>().canExplode = true;
             }
 
+            // Adding back the rigidbody
+            Rigidbody2D body = closestObject.gameObject.AddComponent<Rigidbody2D>() as Rigidbody2D;
+            body.mass = 2;
+            body.angularDrag = 0.5f;
+            body.drag = 0.5f;
+            body.gravityScale = 0;
+            body.freezeRotation = true;
+            body.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+            
             closestObject.tag = "Mid_Molecule";
             closestObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
             float holdDownTime = Time.time - holdDownStartTime;
@@ -159,9 +172,14 @@ public class CursorXhair : MonoBehaviour
         {
             float holdDownTime = Time.time - holdDownStartTime;
             ShowForce(CalculateHoldDownForce(holdDownTime));
+        }else
+        {
+            HideForce();
         }
 
     }
+
+ 
 
     private float CalculateHoldDownForce(float holdTime)
     {

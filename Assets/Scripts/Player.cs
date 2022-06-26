@@ -29,11 +29,6 @@ public class Player : MonoBehaviour
     public Transform DL_Holder;
 
     private CursorXhair cursorXhair;
-    //public Collider2D membraneCollider;
-
-    //public GameObject FauxCollider;
-
-    //public GameObject PlayerItself;
 
     private void Start()
     {
@@ -56,8 +51,9 @@ public class Player : MonoBehaviour
     //once/frame independent from framerate
     private void FixedUpdate()
     {
+        //transform.position = transform.position + movement * moveSpeed * Time.fixedDeltaTime;
         //MOVEMENT
-        rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
 
     //Player AttachmentController
@@ -70,17 +66,14 @@ public class Player : MonoBehaviour
         {
             Ext2Int.collider.transform.parent = _holder;
             Ext2Int.collider.gameObject.transform.position = _holder.position;
-            Ext2Int.collider.gameObject.transform.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
             Ext2Int.collider.gameObject.tag = "Int_Molecule";
-            Ext2Int.collider.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-
-            //FindObjectOfType<Player>().objectGrabed.Add(Ext2Int.collider.gameObject);
-
-
+           
+            Destroy(Ext2Int.collider.gameObject.GetComponent<Rigidbody2D>());
+            
             AttachmentController[] MoleculeChildren = Ext2Int.collider.GetComponentsInChildren<AttachmentController>();
 
 
-            // NEW // loop throw the molecule and  remove them from the explosive list
+            // Loop throw the molecule and  remove them from the explosive list
             foreach (AttachmentController item in MoleculeChildren)
             {
                 if (MoleculeChildren.Length > 0)
@@ -97,7 +90,7 @@ public class Player : MonoBehaviour
                     }
                 }
             }
-            // NEW // checking if number of explosives is greater or equal to 1
+            // Checking if number of explosives is greater or equal to 1
             if (cursorXhair.Explosives.Count >= 1)
             {
                 for (int i = 0; i < cursorXhair.Explosives.Count; i++) // through the loop we will look if the molecule it's in the explosive liste
@@ -114,37 +107,8 @@ public class Player : MonoBehaviour
 
             objectGrabed.Add(Ext2Int.collider.gameObject);
             Debug.Log("ObjectGrabed");
-
-            //FauxSpawning();
-
-            //This is the part that does not work
-            //            CursorXhair.Explosives.Remove(Ext2Int.collider.gameObject);
-            //          Debug.Log("Explosives removed");
-
-            //check if object in a list is in another list unity
-
-            //if (CursorXhair.Explosives.Count >= 1)
-            //{
-            //    CursorXhair.Explosives.Remove(CursorXhair.Explosives.Last());
-            //    Debug.Log("Explosives removed");
-            //}
-
-            //if (CursorXhair.Explosives.Count >= 1)
-            //{
-            //    CursorXhair.Explosives.Remove(CursorXhair.Explosives.Last());
-            //    Debug.Log("Explosives removed");
-            //}
-
-            //And remove from explosives
         }
     }
-
-    //void FauxSpawning()
-    //{
-    //    Vector3 Adjustment = new Vector3(1f, 1f);
-    //    var Faux = Instantiate(FauxCollider, objectGrabed.Last().transform.position += Adjustment, Quaternion.identity);
-    //    Faux.transform.SetParent(gameObject.transform);
-    //}
 
     void LevelRestart()
     {

@@ -60,10 +60,6 @@ public class TutorialManager : MonoBehaviour
             {
                 popUpIndex++;
             }
-            //if (Input.GetMouseButton(1))
-            //{
-            //    popUpIndex++;
-            //}
         }
         else if (popUpIndex == 4)
         {
