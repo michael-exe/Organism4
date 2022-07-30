@@ -16,7 +16,7 @@ using UnityEngine;
 public class Outline : MonoBehaviour {
   private static HashSet<Mesh> registeredMeshes = new HashSet<Mesh>();
 
-  public enum Mode {
+    public enum Mode {
     OutlineAll,
     OutlineVisible,
     OutlineHidden,
@@ -130,6 +130,9 @@ public class Outline : MonoBehaviour {
   }
 
   void Update() {
+
+        this.gameObject.GetComponent<Outline>().enabled = false;
+
     if (needsUpdate) {
       needsUpdate = false;
 
