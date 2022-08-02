@@ -7,19 +7,25 @@ using UnityEngine;
 public class MoleculeSpawner : MonoBehaviour
 {
     public GameObject moleculePrefab;
+
     GameObject spawnedMolecule;
+    bool spawning;
+    float spawnAtTime;
 
     void Update()
     {
-        SpawnIfNull();    
-    }
-
-    void SpawnIfNull()
-    {
-        if (spawnedMolecule == null)
+        if (spawning)
         {
-            spawnedMolecule = Instantiate(moleculePrefab, transform);
+            if (Time.time > spawnAtTime)
+            {
+                spawnedMolecule = Instantiate(moleculePrefab, transform);
+                spawning = false;
+            }
         }
-
+        else if (spawnedMolecule == null)
+        {
+            spawning = true;
+            spawnAtTime = Time.time + 3f;
+        }
     }
 }
