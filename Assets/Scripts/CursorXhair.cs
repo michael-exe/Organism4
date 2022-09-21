@@ -109,7 +109,7 @@ public class CursorXhair : MonoBehaviour
         Eject();
         if(!Input.GetKeyDown(KeyCode.Mouse0)){
             Debug.Log("Hide");
-         //   HideForce();
+            //HideForce();
         }
         if (Explosives.Count >= 1)
         {
@@ -175,6 +175,7 @@ public class CursorXhair : MonoBehaviour
         }else
         {
             HideForce();
+            //ResetForceandBar
         }
 
     }
